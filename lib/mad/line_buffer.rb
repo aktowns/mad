@@ -51,7 +51,7 @@ module Mad
     end
 
     def delete_range(rng)
-      rng.each { |x| delete_at(x) }
+      rng.to_a.each_with_index { |x, i| delete_at(x - i) }
     end
 
     def each(&block)
