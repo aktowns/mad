@@ -10,6 +10,7 @@ module Mad
 
   # Represents a set of Linebuffers, a page.
   class Buffer
+    # Current buffer offset from the top (ie how for down we're scrolled)
     attr_accessor :offset_y
 
     def initialize
@@ -33,7 +34,7 @@ module Mad
     # @param buffer [LineBuffer] the buffer to overwrite it with
     # @return [void]
     def []=(index, buffer)
-      @lines[y + @offset_y] = x
+      @lines[index + @offset_y] = buffer
     end
 
     # Insert a new line at index, throws a {Mad::LineInsertOutOfBounds} exception if the index is higher
@@ -70,7 +71,7 @@ module Mad
     #
     # @return [String]
     def to_s
-      @lines.map(&:to_s).join("\n")
+      @lines.map(&:to_s).join("\n") + "\n"
     end
 
     # Convert the buffer to its array representation
@@ -148,9 +149,21 @@ module Mad
       @highlighter_tokens[@offset_y + y][x]
     end
 
+    # Read in buffer contents from the given filename
+    #
+    # @param fn [String] the filename
+    # @return [Buffer] output buffer
     def self.from_file(fn)
+      File.open(fn, 'r') { |str| Buffer.from_stream(str) }
+    end
+
+    # Read in buffer contents from the given stream
+    #
+    # @param stream [IOStream] the stream
+    # @return [Buffer] output buffer
+    def self.from_stream(stream)
       bfr = Buffer.new
-      IO.read(fn).split("\n").each_with_index do |line, i|
+      stream.string.split("\n").each_with_index do |line, i|
         bfr[i] = LineBuffer.new(line.split(''))
       end
       bfr
