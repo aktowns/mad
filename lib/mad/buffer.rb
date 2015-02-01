@@ -11,9 +11,10 @@ module Mad
   # Represents a set of Linebuffers, a page.
   class Buffer
     # Current buffer offset from the top (ie how for down we're scrolled)
-    attr_accessor :offset_y
+    attr_accessor :offset_y, :language
 
-    def initialize
+    def initialize(language)
+      @language = language
       @offset_y = 0
       @lines = []
     end

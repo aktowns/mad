@@ -13,13 +13,13 @@ module Mad
 
   # The main Editor class, handles keyboard and rendering
   class Editor
-    def initialize(filename)
+    def initialize(filename, language = :ruby)
       Termbox.init
       Termbox.select_output_mode(Termbox::TB_OUTPUT_256)
       @gutter_size = 5
       @cursor = Cursor.new
       @cursor.pos.x = @gutter_size
-      @buffer = Buffer.from_file(filename)
+      @buffer = Buffer.from_file(filename, language)
       update
     end
 

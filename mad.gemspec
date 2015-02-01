@@ -28,4 +28,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'ffi', '~> 1.9'
   spec.add_dependency 'rouge', '~> 1.7'
+  spec.add_dependency 'github-linguist', '~> 4.3.0'
 end
