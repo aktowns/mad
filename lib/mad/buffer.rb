@@ -11,10 +11,10 @@ module Mad
   # Represents a set of Linebuffers, a page.
   class Buffer
     # Current buffer offset from the top (ie how for down we're scrolled)
-    attr_accessor :offset_y, :language
+    attr_accessor :offset_y, :lexer
 
-    def initialize(language)
-      @language = language
+    def initialize(lexer)
+      @lexer = lexer
       @offset_y = 0
       @lines = []
     end
@@ -113,7 +113,7 @@ module Mad
     # @return [void]
     def update_highlighter
       formatter = Formatter.new
-      lexer     = Rouge::Lexers::Ruby.new
+      lexer ||= @lexer.new
 
       formatter.format(lexer.lex(to_s))
 
@@ -154,16 +154,16 @@ module Mad
     #
     # @param fn [String] the filename
     # @return [Buffer] output buffer
-    def self.from_file(fn)
-      File.open(fn, 'r') { |str| Buffer.from_stream(str) }
+    def self.from_file(fn, lexer)
+      File.open(fn, 'r') { |str| Buffer.from_stream(str, lexer) }
     end
 
     # Read in buffer contents from the given stream
     #
     # @param stream [IOStream] the stream
     # @return [Buffer] output buffer
-    def self.from_stream(stream)
-      bfr = Buffer.new
+    def self.from_stream(stream, lexer)
+      bfr = Buffer.new(lexer)
       stream.read.split("\n").each_with_index do |line, i|
         bfr[i] = LineBuffer.new(line.split(''))
       end

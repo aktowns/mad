@@ -14,6 +14,7 @@ module Mad
 
     DEFAULT_THEME = {
       keyword:                  BLUE,
+      keyword_type:             BLUE,
       name:                     CYAN,
       name_builtin:             YELLOW,
       name_constant:            RED,
@@ -26,16 +27,20 @@ module Mad
       name_namespace:           CYAN,
       keyword_pseudo:           CYAN,
 
+      literal_string:           RED,
       literal_string_backtick:  RED,
       literal_string_symbol:    RED,
       literal_string_double:    RED,
       literal_string_single:    RED,
+      literal_number:           RED,
       literal_number_hex:       RED,
       literal_number_integer:   RED,
       literal_string_interpol:  RED,
       literal_string_regex:     RED,
 
       comment_single:           RED,
+      comment:                  RED,
+      comment_preproc:          GREEN,
       error:                    CYAN,
       text:                     CYAN
     }
