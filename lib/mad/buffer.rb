@@ -17,49 +17,98 @@ module Mad
       @lines = []
     end
 
-    def [](y)
-      @lines[y + @offset_y] || LineBuffer.new #= LineBuffer.new
+    # Return a {Mad::LineBuffer LineBuffer} for the line at the given index, return an empty linebuffer
+    # if there is nothing at that index.
+    #
+    # @param index [Fixnum] the index for the line
+    # @return [LineBuffer] the linebuffer at index
+    def [](index)
+      # TODO: we probably should return nil or raise an error here.
+      @lines[index + @offset_y] || LineBuffer.new #= LineBuffer.new
     end
 
-    def []=(y, x)
+    # Overwrite the {Mad::LineBuffer LineBuffer} at index
+    #
+    # @param index [Fixnum] the index of the line to overwrite
+    # @param buffer [LineBuffer] the buffer to overwrite it with
+    # @return [void]
+    def []=(index, buffer)
       @lines[y + @offset_y] = x
     end
 
-    def insert_line(num, item = [])
-      fail(LineInsertOutOfBounds, "#{num} is higher then #{lines}") if num > @lines.length
-      @lines.insert(num + @offset_y, LineBuffer.new(item))
+    # Insert a new line at index, throws a {Mad::LineInsertOutOfBounds} exception if the index is higher
+    # than the current amount of lines
+    #
+    # @note Updates the highlighter (costly) see {#update_highlighter #update_highlighter}
+    # @param index [Fixnum] the index to insert at
+    # @param item [Array<String>] array of characters to insert
+    # @return [void]
+    def insert_line(index, item = [])
+      fail(LineInsertOutOfBounds, "#{num} is higher then #{lines}") if index > @lines.length
+      @lines.insert(index + @offset_y, LineBuffer.new(item))
       update_highlighter
     end
 
-    def delete_line(num)
-      @lines.delete_at(num + @offset_y)
+    # Delete the line at index
+    #
+    # @note Updates the highlighter (costly) see {#update_highlighter #update_highlighter}
+    # @param index [Fixnum] the index to delete at
+    # @return [void]
+    def delete_line(index)
+      @lines.delete_at(index + @offset_y)
       update_highlighter
     end
 
+    # The amount of lines the buffer encompases
+    #
+    # @return [Fixnum] line count
     def lines
       @lines.length
     end
 
+    # Convert the buffer to its string representation
+    #
+    # @return [String]
     def to_s
       @lines.map(&:to_s).join("\n")
     end
 
+    # Convert the buffer to its array representation
+    #
+    # @return [Array<Array<String>>]
     def to_a
       @lines.map(&:to_a)
     end
 
+    # Iterate through each line inside the buffer
+    #
+    # @yield [LineBuffer] current line
+    # @return [void]
     def each(&block)
       @lines[@offset_y..-1].each_with_index(&block)
     end
 
+    # Iterate through each character inside the buffer
+    #
+    # @yield [String] current char
+    # @return [void]
     def each_char(&block)
       @lines[@offset_y..-1].map(&:to_a).flatten.each_with_index(&block)
     end
 
+    # Return the character at x,y
+    #
+    # @param y [Fixnum] y index
+    # @param x [Fixnum] x index
+    # @return [String]
     def char_at(y, x)
       self[@offset_y + y][x]
     end
 
+    # Update the current highlighter lookup table
+    # @note This method is costly, it requires relexing the current file and generating new tokens.
+    #
+    # @return [void]
     def update_highlighter
       formatter = Formatter.new
       lexer     = Rouge::Lexers::Ruby.new
@@ -72,6 +121,11 @@ module Mad
       @highlighter_tokens = formatter.toks
     end
 
+    # The current highlight token for the item at y, x if the token is unknown returns :text
+    #
+    # @param y [Fixnum]
+    # @param x [Fixnum]
+    # @return [Symbol] the token
     def highlight_at(y, x)
       highlight_at!(y, x)
 
@@ -79,6 +133,12 @@ module Mad
       :text
     end
 
+    # The current highlight token for the item at y, x if the token is unknown throws
+    # a {Mad::HighlighterUnknownSegment HighlighterUnknownSegment} exception.
+    #
+    # @param y [Fixnum]
+    # @param x [Fixnum]
+    # @return [Symbol] the token
     def highlight_at!(y, x)
       update_highlighter if @highlighter_tokens.nil?
 
