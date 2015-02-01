@@ -1,3 +1,5 @@
+[![Gem Version](https://badge.fury.io/rb/mad.svg)](http://badge.fury.io/rb/mad)
+
 # Mad
 
 TODO: Write a gem description
