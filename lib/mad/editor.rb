@@ -7,6 +7,10 @@ require_relative 'cursor'
 module Mad
   class NotImplemented < Exception; end
 
+  class Handlers
+
+  end
+
   # The main Editor class, handles keyboard and rendering
   class Editor
     def initialize(filename)
