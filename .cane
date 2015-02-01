@@ -1,1 +1,2 @@
 --style-measure=120
+--gte coverage/.last_run.json,90
