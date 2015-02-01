@@ -1,14 +1,14 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/mad'
+require 'mad'
 
 begin
-  mad = Mad.new(ARGV[0])
+  mad = Mad::Editor.new(ARGV[0])
   mad.keyboard_handler
 rescue Exception => e
-  Log.common.fatal(e.inspect)
-  Log.common.fatal(e.backtrace.join("\n"))
+  Mad::Log.common.fatal(e.inspect)
+  Mad::Log.common.fatal(e.backtrace.join("\n"))
   puts "Fatal Exception: #{e.message}"
 ensure
-  Termbox.shutdown
+  Mad::Termbox.shutdown
 end
