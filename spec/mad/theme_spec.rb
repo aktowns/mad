@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# A crazy text editor written in ruby.
 module Mad
   describe Theme do
     it 'sets a colour, given a token' do

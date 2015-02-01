@@ -1,8 +1,9 @@
 require 'spec_helper'
 
+# A crazy text editor written in ruby.
 module Mad
   describe LineBuffer do
-    let(:contents) { "Hello world!".split('') }
+    let(:contents) { 'Hello world!'.split('') }
 
     before(:each) do
       @line_buffer = LineBuffer.new(contents)

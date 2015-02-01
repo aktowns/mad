@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# A crazy text editor written in ruby.
 module Mad
   describe Cursor do
     before(:each) do

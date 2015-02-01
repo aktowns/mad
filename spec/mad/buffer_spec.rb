@@ -10,6 +10,7 @@ end
 load_json_from_filename "hello_world.json"
 RUBY
 
+# A crazy text editor written in ruby.
 module Mad
   describe Buffer do
     let :file_contents do

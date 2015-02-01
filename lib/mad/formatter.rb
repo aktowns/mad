@@ -11,10 +11,8 @@ module Mad
     end
 
     def stream(tokens, &_b)
-      fp = File.open('tokenizer.txt', 'w') if Mad.debug?
       line = []
       tokens.each do |tok, val|
-        fp.puts "parsing #{tok.inspect} - #{val.inspect}" if Mad.debug?
         if val.include?("\n") && val.gsub(/\n/, '') == ''
           val.count("\n").times do
             @toks << line
@@ -26,9 +24,7 @@ module Mad
               @toks << line
               line = []
             else
-              x.length.times do
-                line << normalize_qualname(tok.qualname)
-              end
+              x.length.times { line << normalize_qualname(tok.qualname) }
             end
           end
         else
@@ -36,12 +32,10 @@ module Mad
             line << normalize_qualname(tok.qualname)
           end
         end
-        fp.puts "tokens: #{line} #{@toks.length}:#{line.length}" if Mad.debug?
         yield ''
       end
 
       @toks << line
-      fp.close if Mad.debug?
     end
 
     private
