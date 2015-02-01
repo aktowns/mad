@@ -9,6 +9,11 @@ module Mad
       @pos = Termbox::Pos.new(x: 0, y: 0)
     end
 
+    def set(x, y)
+      @pos.x = x
+      @pos.y = y
+    end
+
     def update
       Termbox.set_cursor(@pos)
     end
@@ -18,7 +23,7 @@ module Mad
     end
 
     def up
-      @pos.y -= 1
+      @pos.y -= 1 if @pos.y > 0
     end
 
     def right
@@ -26,7 +31,7 @@ module Mad
     end
 
     def left
-      @pos.x -= 1
+      @pos.x -= 1 if @pos.x > 0
     end
   end
 end
