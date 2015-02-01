@@ -1,5 +1,7 @@
 module Mad
   class ThemeKeywordUnknown < Exception; end
+
+  # Basic theme suppot, colouring tokens and the like.
   class Theme
     BLUE    = Termbox::TB_BLUE
     RED     = Termbox::TB_RED
@@ -38,7 +40,7 @@ module Mad
       when :error                   then CYAN
       when :text                    then CYAN
       else
-        raise ThemeKeywordUnknown.new(kind) unless kind.nil?
+        fail(ThemeKeywordUnknown, kind) unless kind.nil?
         Termbox::TB_CYAN
       end
     end

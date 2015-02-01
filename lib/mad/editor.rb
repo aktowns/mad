@@ -7,6 +7,7 @@ require_relative 'cursor'
 module Mad
   class NotImplemented < Exception; end
 
+  # The main Editor class, handles keyboard and rendering
   class Editor
     def initialize(filename)
       Termbox.init
@@ -31,9 +32,11 @@ module Mad
     end
 
     def update_linums
-      ((@buffer.offset_y + 1)..(@buffer.offset_y+Termbox.height+1)).to_a.each_with_index do |i, y|
-        sprintf("%-03d|", i).split('').each_with_index do |ch, x|
-          Termbox.change_cell(Termbox::Chr.new(x: x, y: y, ch: ch, fg: Termbox::TB_YELLOW, bg: Termbox::TB_DEFAULT)) if (i <= @buffer.lines+1)
+      ((@buffer.offset_y + 1)..(@buffer.offset_y + Termbox.height + 1)).to_a.each_with_index do |i, y|
+        sprintf('%-03d|', i).split('').each_with_index do |ch, x|
+          if (i <= @buffer.lines + 1)
+            Termbox.change_cell(Termbox::Chr.new(x: x, y: y, ch: ch, fg: Termbox::TB_YELLOW, bg: Termbox::TB_DEFAULT))
+          end
         end
       end
     end
@@ -45,6 +48,7 @@ module Mad
     def cursor_x_reset
       @cursor.pos.x = @gutter_size
     end
+
     def cursor_y_reset
       @cursor.pos.y = 0
     end
@@ -92,7 +96,7 @@ module Mad
               cursor_y_reset
               cursor_x_reset
             elsif @buffer.offset_y > 0
-              if (@buffer.offset_y > Termbox.height)
+              if @buffer.offset_y > Termbox.height
                 @buffer.offset_y -= Termbox.height
               else
                 @buffer.offset_y = 0
@@ -142,7 +146,7 @@ module Mad
               @cursor.left
             end
           when Termbox::TB_KEY_TAB
-            @buffer[@cursor.pos.y].insert_at(@cursor.pos.x - @gutter_size, "  ")
+            @buffer[@cursor.pos.y].insert_at(@cursor.pos.x - @gutter_size, '  ')
             2.times { @cursor.right }
             update
           else
@@ -151,7 +155,7 @@ module Mad
               @cursor.right
               @buffer.update_highlighter
             else
-              raise NotImplemented.new("#{evt[:key].inspect} #{evt[:ch].inspect}")
+              fail(NotImplemented, "#{evt[:key].inspect} #{evt[:ch].inspect}")
             end
           end
           @cursor.update

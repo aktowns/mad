@@ -1,33 +1,34 @@
 require 'ffi'
 
 module Mad
+  # Low level FFI Bindings to libtermbox
   module Termbox
     extend FFI::Library
 
     ffi_lib '/usr/local/lib/libtermbox.dylib'
 
-    TB_KEY_F1 =           (0xFFFF-0)
-    TB_KEY_F2 =           (0xFFFF-1)
-    TB_KEY_F3 =           (0xFFFF-2)
-    TB_KEY_F4 =           (0xFFFF-3)
-    TB_KEY_F5 =           (0xFFFF-4)
-    TB_KEY_F6 =           (0xFFFF-5)
-    TB_KEY_F7 =           (0xFFFF-6)
-    TB_KEY_F8 =           (0xFFFF-7)
-    TB_KEY_F9 =           (0xFFFF-8)
-    TB_KEY_F10 =          (0xFFFF-9)
-    TB_KEY_F11 =          (0xFFFF-10)
-    TB_KEY_F12 =          (0xFFFF-11)
-    TB_KEY_INSERT =       (0xFFFF-12)
-    TB_KEY_DELETE =       (0xFFFF-13)
-    TB_KEY_HOME =         (0xFFFF-14)
-    TB_KEY_END =          (0xFFFF-15)
-    TB_KEY_PGUP =         (0xFFFF-16)
-    TB_KEY_PGDN =         (0xFFFF-17)
-    TB_KEY_ARROW_UP =     (0xFFFF-18)
-    TB_KEY_ARROW_DOWN =   (0xFFFF-19)
-    TB_KEY_ARROW_LEFT =   (0xFFFF-20)
-    TB_KEY_ARROW_RIGHT =  (0xFFFF-21)
+    TB_KEY_F1 =           (0xFFFF - 0)
+    TB_KEY_F2 =           (0xFFFF - 1)
+    TB_KEY_F3 =           (0xFFFF - 2)
+    TB_KEY_F4 =           (0xFFFF - 3)
+    TB_KEY_F5 =           (0xFFFF - 4)
+    TB_KEY_F6 =           (0xFFFF - 5)
+    TB_KEY_F7 =           (0xFFFF - 6)
+    TB_KEY_F8 =           (0xFFFF - 7)
+    TB_KEY_F9 =           (0xFFFF - 8)
+    TB_KEY_F10 =          (0xFFFF - 9)
+    TB_KEY_F11 =          (0xFFFF - 10)
+    TB_KEY_F12 =          (0xFFFF - 11)
+    TB_KEY_INSERT =       (0xFFFF - 12)
+    TB_KEY_DELETE =       (0xFFFF - 13)
+    TB_KEY_HOME =         (0xFFFF - 14)
+    TB_KEY_END =          (0xFFFF - 15)
+    TB_KEY_PGUP =         (0xFFFF - 16)
+    TB_KEY_PGDN =         (0xFFFF - 17)
+    TB_KEY_ARROW_UP =     (0xFFFF - 18)
+    TB_KEY_ARROW_DOWN =   (0xFFFF - 19)
+    TB_KEY_ARROW_LEFT =   (0xFFFF - 20)
+    TB_KEY_ARROW_RIGHT =  (0xFFFF - 21)
 
     TB_KEY_CTRL_TILDE =      0x00
     TB_KEY_CTRL_2 =          0x00
@@ -110,12 +111,14 @@ module Mad
     TB_OUTPUT_216       = 3
     TB_OUTPUT_GRAYSCALE = 4
 
+    # The tb_cell struct as returned by libtermbox
     class Cell < FFI::Struct
       layout :ch, :int,
              :fg, :uint16,
              :bg, :uint16
     end
 
+    # The tb_event struct as returned by libtermbox
     class Event < FFI::Struct
       layout :type, :uint8,
              :mod,  :uint8,
@@ -195,16 +198,14 @@ module Mad
 
       def peek_event(timeout, &block)
         evt = Termbox::Event.new
-        while Termbox.tb_peek_event(evt, timeout)
-          block.call(evt)
-        end
+
+        block.call(evt) while Termbox.tb_peek_event(evt, timeout)
       end
 
       def poll_event(&block)
         evt = Termbox::Event.new
-        while Termbox.tb_poll_event(evt)
-          block.call(evt)
-        end
+
+        block.call(evt) while Termbox.tb_poll_event(evt)
       end
     end
   end

@@ -1,4 +1,5 @@
 module Mad
+  # Represents a singe line
   class LineBuffer
     attr_reader :chrs
 
@@ -10,8 +11,8 @@ module Mad
       @chrs[x] ||= nil
     end
 
-    def []=(x,y)
-      (x - @chrs.length).times {|x| @chrs.insert(x, " ")} if @chrs.length < x
+    def []=(x, y)
+      (x - @chrs.length).times { |i| @chrs.insert(i, ' ') } if @chrs.length < x
       @chrs[x] = y
     end
 
@@ -50,7 +51,7 @@ module Mad
     end
 
     def delete_range(rng)
-      rng.each{|x| delete_at(x) }
+      rng.each { |x| delete_at(x) }
     end
 
     def each(&block)

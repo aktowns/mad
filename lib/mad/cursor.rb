@@ -1,10 +1,11 @@
 require 'mad/termbox'
 
 module Mad
+  # represents the cursor on a buffer
   class Cursor
     attr_reader :pos
 
-    def initialize()
+    def initialize
       @pos = Termbox::Pos.new(x: 0, y: 0)
     end
 

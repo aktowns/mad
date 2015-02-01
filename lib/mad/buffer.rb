@@ -8,6 +8,7 @@ module Mad
   class HighlighterUnknownSegment < Exception; end
   class LineInsertOutOfBounds < Exception; end
 
+  # Represents a set of Linebuffers, a page.
   class Buffer
     attr_accessor :offset_y
 
@@ -17,21 +18,21 @@ module Mad
     end
 
     def [](y)
-      @lines[y+@offset_y] || LineBuffer.new #= LineBuffer.new
+      @lines[y + @offset_y] || LineBuffer.new #= LineBuffer.new
     end
 
     def []=(y, x)
-      @lines[y+@offset_y] = x
+      @lines[y + @offset_y] = x
     end
 
-    def insert_line(num, item=[])
-      raise LineInsertOutOfBounds.new("#{num} is higher then #{lines}") if num > @lines.length
-      @lines.insert(num+@offset_y, LineBuffer.new(item))
+    def insert_line(num, item = [])
+      fail(LineInsertOutOfBounds, "#{num} is higher then #{lines}") if num > @lines.length
+      @lines.insert(num + @offset_y, LineBuffer.new(item))
       update_highlighter
     end
 
     def delete_line(num)
-      @lines.delete_at(num+@offset_y)
+      @lines.delete_at(num + @offset_y)
       update_highlighter
     end
 
@@ -56,7 +57,7 @@ module Mad
     end
 
     def char_at(y, x)
-      self[@offset_y+y][x]
+      self[@offset_y + y][x]
     end
 
     def update_highlighter
@@ -72,20 +73,19 @@ module Mad
     end
 
     def highlight_at(y, x)
-      begin
-        highlight_at!(y, x)
-      rescue HighlighterUnknownSegment
-        :text
-      end
+      highlight_at!(y, x)
+
+    rescue HighlighterUnknownSegment
+      :text
     end
 
     def highlight_at!(y, x)
       update_highlighter if @highlighter_tokens.nil?
 
-      raise HighlighterUnknownSegment.new("line: #{y}") if @highlighter_tokens[@offset_y+y].nil?
-      raise HighlighterUnknownSegment.new("line: #{y} char: #{x}") if @highlighter_tokens[@offset_y+y][x].nil?
+      fail(HighlighterUnknownSegment, "line: #{y}") if @highlighter_tokens[@offset_y + y].nil?
+      fail(HighlighterUnknownSegment, "line: #{y} char: #{x}") if @highlighter_tokens[@offset_y + y][x].nil?
 
-      @highlighter_tokens[@offset_y+y][x]
+      @highlighter_tokens[@offset_y + y][x]
     end
 
     def self.from_file(fn)

@@ -5,7 +5,7 @@ require 'mad'
 begin
   mad = Mad::Editor.new(ARGV[0])
   mad.keyboard_handler
-rescue Exception => e
+rescue StandardError => e
   Mad::Log.common.fatal(e.inspect)
   Mad::Log.common.fatal(e.backtrace.join("\n"))
   puts "Fatal Exception: #{e.message}"
