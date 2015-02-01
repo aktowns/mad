@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/mad'
+
+begin
+  mad = Mad.new(ARGV[0])
+  mad.keyboard_handler
+rescue Exception => e
+  Log.common.fatal(e.inspect)
+  Log.common.fatal(e.backtrace.join("\n"))
+  puts "Fatal Exception: #{e.message}"
+ensure
+  Termbox.shutdown
+end
