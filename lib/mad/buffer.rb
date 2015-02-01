@@ -163,7 +163,7 @@ module Mad
     # @return [Buffer] output buffer
     def self.from_stream(stream)
       bfr = Buffer.new
-      stream.string.split("\n").each_with_index do |line, i|
+      stream.read.split("\n").each_with_index do |line, i|
         bfr[i] = LineBuffer.new(line.split(''))
       end
       bfr
