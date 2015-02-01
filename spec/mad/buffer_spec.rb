@@ -15,6 +15,7 @@ module Mad
     let :file_contents do
       stream = StringIO.new
       stream.puts EXAMPLE_RUBY
+      stream.pos = 0
       stream
     end
 
