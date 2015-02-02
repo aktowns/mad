@@ -7,7 +7,7 @@ require 'mad/language'
 
 module Mad
   class NotImplemented < Exception; end
-  
+
   # The main Editor class, handles keyboard and rendering
   class Editor
     def initialize(filename, language = :unknown)
@@ -216,6 +216,5 @@ module Mad
         end
       end
     end
-
   end
 end
