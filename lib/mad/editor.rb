@@ -62,6 +62,7 @@ module Mad
 
     def handle_esc
       Log.common.info(@buffer.to_s)
+      Terminal.shutdown
       exit
     end
 
