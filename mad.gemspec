@@ -26,8 +26,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 3.1.0'
   spec.add_development_dependency 'simplecov', '~> 0.9.1'
   spec.add_development_dependency 'pry', '~> 0.10.1'
+  spec.add_development_dependency 'ruby-prof', '~>0.15.3'
 
-  spec.add_dependency 'termbox-ffi', '~> 0.0.1'
+  spec.add_dependency 'termbox-ffi', '~> 0.0.3'
   spec.add_dependency 'rouge', '~> 1.7'
-  spec.add_dependency 'github-linguist', '~> 4.3.0'
 end

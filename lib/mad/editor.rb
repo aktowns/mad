@@ -10,13 +10,11 @@ module Mad
 
   # The main Editor class, handles keyboard and rendering
   class Editor
-    def initialize(filename, language = :unknown)
-      language = Language.infer_language(filename) if language == :unknown
+    def initialize(filename, language = :plaintext)
+      filename = File.expand_path(filename)
 
-      # if we can't infer, dropback to plaintext
-      language = :plaintext if language == :unknown
-
-      lexer = Language.available_lexers[language]
+      lexer = Language.infer_language(filename) # if language == :plaintext
+      Log.common.info "language inferred as: #{lexer}"
 
       Terminal.init
       Terminal.select_output_mode(Termbox::TB_OUTPUT_256)

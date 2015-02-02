@@ -21,9 +21,15 @@ module Mad
       name_function:            YELLOW,
       name_variable_instance:   BLACK,
       name_variable_global:     BLACK,
+      name_builtin_pseudo:      BLACK,
+      name_variable:            GREEN,
       name_class:               GREEN,
+      name_other:               GREEN,
+      name_tag:                 GREEN,
       operator:                 CYAN,
+      operator_word:            CYAN,
       punctuation:              CYAN,
+      punctuation_indicator:    CYAN,
       name_namespace:           CYAN,
       keyword_pseudo:           CYAN,
 
@@ -37,6 +43,7 @@ module Mad
       literal_number_integer:   RED,
       literal_string_interpol:  RED,
       literal_string_regex:     RED,
+      literal_string_escape:    RED,
 
       comment_single:           RED,
       comment:                  RED,

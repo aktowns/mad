@@ -1,14 +1,12 @@
 #!/usr/bin/env ruby
-
 require 'mad'
 
 begin
+  abort "File not found" if !File.exist?(ARGV[0])
   mad = Mad::Editor.new(ARGV[0])
   mad.keyboard_handler
 rescue StandardError => e
   Mad::Log.common.fatal(e.inspect)
   Mad::Log.common.fatal(e.backtrace.join("\n"))
   puts "Fatal Exception: #{e.message}"
-ensure
-  Mad::Terminal.shutdown
 end

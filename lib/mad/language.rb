@@ -1,5 +1,5 @@
 require 'rouge'
-require 'linguist'
+require 'mad/log'
 
 module Mad
   # Basic language handling
@@ -10,21 +10,18 @@ module Mad
           klass_name = klass.name
 
           # We only want top level classes
-          next if klass_name.count(':') != 4
+          if klass_name.count(':') == 4
+            normalised_name = normalize_name(klass_name.split('::')[-1])
 
-          normalised_name = normalize_name(klass_name.split('::')[-1])
-
-          [normalised_name, klass]
+            [normalised_name, klass]
+          end
         end.compact.flatten
 
         Hash[*lexers]
       end
 
       def infer_language(file)
-        lang = Linguist::FileBlob.new(file).language
-        return :unknown if lang.nil?
-
-        normalize_name(lang.ace_mode)
+        Rouge::Lexer.guess_by_filename(file)
       end
 
       private
