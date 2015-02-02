@@ -18,7 +18,7 @@ module Mad
 
       Terminal.init
       Terminal.select_output_mode(Termbox::TB_OUTPUT_256)
-      @gutter_size = 5
+      @gutter_size = 4
       @cursor = Cursor.new
       @cursor.pos.x = @gutter_size
       @buffer = Buffer.from_file(filename, lexer)
@@ -34,14 +34,15 @@ module Mad
         end
       end
       update_linums
+      @buffer.update_highlighter
       Terminal.present
     end
 
     def update_linums
       ((@buffer.offset_y + 1)..(@buffer.offset_y + Terminal.height + 1)).to_a.each_with_index do |i, y|
-        sprintf('%-03d|', i).split('').each_with_index do |ch, x|
+        sprintf('%-03d', i).split('').each_with_index do |ch, x|
           if (i <= @buffer.lines + 1)
-            Terminal.change_cell(Terminal::Chr.new(x: x, y: y, ch: ch, fg: Termbox::TB_YELLOW, bg: Termbox::TB_DEFAULT))
+            Terminal.change_cell(Terminal::Chr.new(x: x, y: y, ch: ch, fg: Theme.get_colour(:linum), bg: Theme.get_colour(:linum_background)))
           end
         end
       end

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mad (0.0.3)
+    mad (0.0.5)
       rouge (~> 1.7)
       termbox-ffi (~> 0.0.3)
 
