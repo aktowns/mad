@@ -1,25 +1,29 @@
-require_relative 'termbox'
-require_relative 'buffer'
-require_relative 'theme'
-require_relative 'log'
-require_relative 'cursor'
+require 'mad/termbox'
+require 'mad/buffer'
+require 'mad/theme'
+require 'mad/log'
+require 'mad/cursor'
+require 'mad/language'
 
 module Mad
   class NotImplemented < Exception; end
 
-  class Handlers
-
-  end
-
   # The main Editor class, handles keyboard and rendering
   class Editor
-    def initialize(filename)
+    def initialize(filename, language = :unknown)
+      language = Language.infer_language(filename) if language == :unknown
+
+      # if we can't infer, dropback to plaintext
+      language = :plaintext if language == :unknown
+
+      lexer = Language.available_lexers[language]
+
       Termbox.init
       Termbox.select_output_mode(Termbox::TB_OUTPUT_256)
       @gutter_size = 5
       @cursor = Cursor.new
       @cursor.pos.x = @gutter_size
-      @buffer = Buffer.from_file(filename)
+      @buffer = Buffer.from_file(filename, lexer)
       update
     end
 

@@ -25,7 +25,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'cane', '~> 2.6.2'
   spec.add_development_dependency 'rspec', '~> 3.1.0'
   spec.add_development_dependency 'simplecov', '~> 0.9.1'
+  spec.add_development_dependency 'pry', '~> 0.10.1'
 
   spec.add_dependency 'ffi', '~> 1.9'
   spec.add_dependency 'rouge', '~> 1.7'
+  spec.add_dependency 'github-linguist', '~> 4.3.0'
 end
