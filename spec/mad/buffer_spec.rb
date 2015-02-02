@@ -21,7 +21,7 @@ module Mad
     end
 
     before(:each) do
-      @buffer = Buffer.from_stream(file_contents)
+      @buffer = Buffer.from_stream(file_contents, Language.available_lexers[:ruby])
     end
 
     it 'can read from a stream' do
