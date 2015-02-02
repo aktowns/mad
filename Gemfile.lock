@@ -2,9 +2,9 @@ PATH
   remote: .
   specs:
     mad (0.0.2)
-      ffi (~> 1.9)
       github-linguist (~> 4.3.0)
       rouge (~> 1.7)
+      termbox-ffi (~> 0.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -38,7 +38,7 @@ GEM
       slop (~> 3.4)
     rainbow (2.0.0)
     rake (10.4.2)
-    rouge (1.7.7)
+    rouge (1.8.0)
     rspec (3.1.0)
       rspec-core (~> 3.1.0)
       rspec-expectations (~> 3.1.0)
@@ -65,6 +65,8 @@ GEM
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
     slop (3.6.0)
+    termbox-ffi (0.0.3)
+      ffi (~> 1.9)
     yard (0.8.7.6)
 
 PLATFORMS

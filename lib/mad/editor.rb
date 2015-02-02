@@ -1,4 +1,4 @@
-require 'mad/termbox'
+require 'mad/terminal'
 require 'mad/buffer'
 require 'mad/theme'
 require 'mad/log'
@@ -18,8 +18,8 @@ module Mad
 
       lexer = Language.available_lexers[language]
 
-      Termbox.init
-      Termbox.select_output_mode(Termbox::TB_OUTPUT_256)
+      Terminal.init
+      Terminal.select_output_mode(Termbox::TB_OUTPUT_256)
       @gutter_size = 5
       @cursor = Cursor.new
       @cursor.pos.x = @gutter_size
@@ -28,22 +28,22 @@ module Mad
     end
 
     def update
-      Termbox.clear
+      Terminal.clear
       @buffer.each do |line, y|
         line.each do |char, x|
           colour = Theme.get_colour(@buffer.highlight_at(y, x))
-          Termbox.change_cell(Termbox::Chr.new(x: x + @gutter_size, y: y, ch: char, fg: colour))
+          Terminal.change_cell(Terminal::Chr.new(x: x + @gutter_size, y: y, ch: char, fg: colour))
         end
       end
       update_linums
-      Termbox.present
+      Terminal.present
     end
 
     def update_linums
-      ((@buffer.offset_y + 1)..(@buffer.offset_y + Termbox.height + 1)).to_a.each_with_index do |i, y|
+      ((@buffer.offset_y + 1)..(@buffer.offset_y + Terminal.height + 1)).to_a.each_with_index do |i, y|
         sprintf('%-03d|', i).split('').each_with_index do |ch, x|
           if (i <= @buffer.lines + 1)
-            Termbox.change_cell(Termbox::Chr.new(x: x, y: y, ch: ch, fg: Termbox::TB_YELLOW, bg: Termbox::TB_DEFAULT))
+            Terminal.change_cell(Terminal::Chr.new(x: x, y: y, ch: ch, fg: Termbox::TB_YELLOW, bg: Termbox::TB_DEFAULT))
           end
         end
       end
@@ -73,7 +73,7 @@ module Mad
       next_line_width = @gutter_size + @buffer[@cursor.pos.y + 1].width
       @cursor.pos.x = next_line_width if @cursor.pos.x >= next_line_width
 
-      if @cursor.pos.y >= (Termbox.height - 1)
+      if @cursor.pos.y >= (Terminal.height - 1)
         @buffer.offset_y += 1
       else
         @cursor.down
@@ -111,8 +111,8 @@ module Mad
       if @cursor.pos.y != 0
         cursor_reset
       elsif @buffer.offset_y > 0
-        if @buffer.offset_y > Termbox.height
-          @buffer.offset_y -= Termbox.height
+        if @buffer.offset_y > Terminal.height
+          @buffer.offset_y -= Terminal.height
         else
           @buffer.offset_y = 0
         end
@@ -122,8 +122,8 @@ module Mad
     def handle_key_pagedown
       return if (@cursor.pos.y + @buffer.offset_y) >= @buffer.lines
 
-      if (@cursor.pos.y + @buffer.offset_y + Termbox.height) < @buffer.lines
-        @buffer.offset_y += Termbox.height
+      if (@cursor.pos.y + @buffer.offset_y + Terminal.height) < @buffer.lines
+        @buffer.offset_y += Terminal.height
         cursor_y_reset
       else
         @cursor.pos.y += (@buffer.lines - @buffer.offset_y)
@@ -187,7 +187,7 @@ module Mad
     end
 
     def keyboard_handler
-      Termbox.poll_event do |evt|
+      Terminal.poll_event do |evt|
         if evt[:type] == Termbox::TB_EVENT_KEY
           case evt[:key]
           when Termbox::TB_KEY_ESC          then handle_esc

@@ -1,4 +1,4 @@
-require 'mad/termbox'
+require 'mad/terminal'
 
 module Mad
   # represents the cursor on a buffer
@@ -6,7 +6,7 @@ module Mad
     attr_reader :pos
 
     def initialize
-      @pos = Termbox::Pos.new(x: 0, y: 0)
+      @pos = Terminal::Pos.new(x: 0, y: 0)
     end
 
     def set(x, y)
@@ -15,7 +15,7 @@ module Mad
     end
 
     def update
-      Termbox.set_cursor(@pos)
+      Terminal.set_cursor(@pos)
     end
 
     def down

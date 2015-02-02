@@ -6,7 +6,7 @@ require 'mad/formatter'
 require 'mad/language'
 require 'mad/line_buffer'
 require 'mad/log'
-require 'mad/termbox'
+require 'mad/terminal'
 require 'mad/theme'
 
 # A crazy text editor written in ruby.

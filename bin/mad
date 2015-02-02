@@ -10,5 +10,5 @@ rescue StandardError => e
   Mad::Log.common.fatal(e.backtrace.join("\n"))
   puts "Fatal Exception: #{e.message}"
 ensure
-  Mad::Termbox.shutdown
+  Mad::Terminal.shutdown
 end
